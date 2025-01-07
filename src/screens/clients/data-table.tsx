@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
 					/>
 					
 					<div className='flex items-center space-x-6'>
-						<Link to='/branchs/add' className='bg-black text-white text-sm font-semibold hover:bg-[#23CFCE] dark:bg-[#212121] dark:hover:bg-[#23CFCE] dark:hover:text-black py-2.5 p-5 rounded-lg transition-colors duration-400'>
+						<Link to='/clients/add' className='bg-black text-white text-sm font-semibold hover:bg-[#23CFCE] dark:bg-[#212121] dark:hover:bg-[#23CFCE] dark:hover:text-black py-2.5 p-5 rounded-lg transition-colors duration-400'>
 							<span>Adicionar</span> 
 						</Link>
 					</div>
