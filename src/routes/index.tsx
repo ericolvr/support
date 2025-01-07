@@ -27,7 +27,7 @@ import { EditClient } from '@/screens/clients/edit'
 import { AddTicketServices } from '@/screens/tickets/addTicketServices'
 
 import { Unauthorized } from '@/screens/unauthorized'
-import { AddTicketProducts } from '@/screens/tickets/AddTicketProducts'
+//import { AddTicketProducts } from '@/screens/tickets/AddTicketProducts'
 
 
 export const AppRoutes = () => {
@@ -151,55 +151,10 @@ export const AppRoutes = () => {
                 />
                 <Route path='/tickets/products/:number' element={
                     <PrivateRoutes allowedRoles={['0','1']}>
-                        <AddTicketProducts />
+                        {/*<AddTicketProducts />*/}
                     </PrivateRoutes>
                     } 
                 />
-                {/* <Route path='/tickets/edit/:id' element={
-                    <PrivateRoutes allowedRoles={['0', '1']}>
-                        <EditTicket />
-                    </PrivateRoutes>
-                    } 
-                />
-
-                <Route path='/appointments' element={
-                    <PrivateRoutes allowedRoles={['0', '1']}>
-                        <ListAppointments />
-                    </PrivateRoutes>
-                } 
-                />
-                <Route path='/appointments/add' element={
-                    <PrivateRoutes allowedRoles={['0', '1']}>
-                        <AddAppointments />
-                    </PrivateRoutes>
-                }
-                />
-                <Route path='/appointments/edit/:id' element={
-                    <PrivateRoutes allowedRoles={['0', '1']}>
-                        <EditAppointment />
-                    </PrivateRoutes>
-                } 
-                />
-
-                <Route path='/consolidation' element={
-                    <PrivateRoutes allowedRoles={['0']}>
-                        <Consolidation />
-                    </PrivateRoutes>
-                } 
-                />
-                <Route path='/consolidation/date-range' element={
-                    <PrivateRoutes allowedRoles={['0']}>
-                        <ConsolidationDateRange />
-                    </PrivateRoutes>
-                } 
-                />
-
-                <Route path='/unauthorized' element={
-                    <PrivateRoutes allowedRoles={['0', '1']}>
-                        <Unauthorized />
-                    </PrivateRoutes>
-                } 
-                /> */}
             </Routes>
         </BrowserRouter>
     )

@@ -37,6 +37,7 @@ import ApiBranch from './service'
 const FormSchema = z.object({
     
     name: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
+    cost_center: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
     budget: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
 })
 
@@ -112,7 +113,7 @@ export function AddClient() {
                                         />
                                     </div>
 
-                                    <div className='w-1/2'>
+                                    <div className='w-1/2 mr-8'>
                                         <FormField
                                             control={form.control}
                                             name='budget'
@@ -120,6 +121,20 @@ export function AddClient() {
                                                 <FormItem>
                                                     <FormLabel>Orçamento</FormLabel>
                                                     <Input placeholder='Orçamento' {...field} />
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className='w-1/2'>
+                                        <FormField
+                                            control={form.control}
+                                            name='cost_center'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>centro de cusro</FormLabel>
+                                                    <Input placeholder='centro de custo' {...field} />
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
