@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { z } from 'zod'
@@ -35,30 +35,52 @@ import ApiBranch from './service'
 
 
 const FormSchema = z.object({
-    
-    name: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
-    cost_center: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
-    budget: z.string().min(3, {message: 'Mínimo 3 caracteres'}),
-})
+    name: z.string().min(3, { message: 'Mínimo 3 caracteres' }),
+    cost_center: z.string().min(3, { message: 'Mínimo 3 caracteres' }),
+    budget: z.string().min(3, { message: 'Mínimo 3 digitos' }),
+});
 
+const formatCurrency = (value: string) => {
+    let formattedValue = value.replace(/[^\d,]/g, '')
+    formattedValue = formattedValue.replace(/,/g, '')
+    if (formattedValue.length > 2) {
+        formattedValue = formattedValue.replace(/(\d)(\d{2})$/, '$1,$2')
+    }
+    formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    formattedValue = `R$ ${formattedValue}`
+    return formattedValue
+}
 
 export function AddClient() {
+    const [budget, setBudget] = useState('')
     const navigate = useNavigate()
     
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
+
+    const handleBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const bugdetChanged = event.target.value
+        setBudget(formatCurrency(bugdetChanged))
+        form.setValue('budget', bugdetChanged)
+    }
     
     async function onSubmit(data: z.infer<typeof FormSchema>) {
+        
+        const updateData = {
+            ...data,
+            budget: budget.replace('R$', '').replace(/\s+/g, '').replace(',', '.').trim(),
+        }
+
         try {
-            const response = await ApiBranch.Insert({ data })
-            if (response === 201) {                
+            const response = await ApiBranch.Insert({ data: updateData })
+            if (response === 201) {
                 navigate('/clients')
             } else {
                 toast.error('Error adding client')
             }
         } catch (error) {
-
+            toast.error('Erro inesperado')
         }
     }
               
@@ -97,7 +119,7 @@ export function AddClient() {
                 <div className='flex flex-1 flex-col  p-4 mt-1 mr-3 ml-3'>
                     <div className='col-span-2 bg-white shadow-sm p-10 rounded-md dark:bg-[#292929]'>
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)}>                            
+                            <form onSubmit={form.handleSubmit(onSubmit)}>
                                 <div className='flex items-center'>
                                     <div className='w-1/2 mr-8'>
                                         <FormField
@@ -120,7 +142,12 @@ export function AddClient() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Orçamento</FormLabel>
-                                                    <Input placeholder='Orçamento' {...field} />
+                                                    <Input 
+                                                        placeholder='Orçamento'
+                                                        {...field}
+                                                        value={budget}
+                                                        onChange={handleBudgetChange}
+                                                    />
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -133,7 +160,7 @@ export function AddClient() {
                                             name='cost_center'
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>centro de cusro</FormLabel>
+                                                    <FormLabel>Centro de custo</FormLabel>
                                                     <Input placeholder='centro de custo' {...field} />
                                                     <FormMessage />
                                                 </FormItem>
