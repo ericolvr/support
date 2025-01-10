@@ -211,7 +211,15 @@ export function AddSuppliers() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>CEP</FormLabel>
-                                                    <Input type='text' placeholder='CEP' {...field} />
+                                                    <InputMask
+                                                        mask="99999-999"
+                                                        value={field.value}
+                                                        placeholder='CEP'
+                                                        onChange={field.onChange}
+                                                        onBlur={field.onBlur}
+                                                    >
+                                                        {(inputProps) => <Input {...inputProps} />}
+                                                    </InputMask>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}

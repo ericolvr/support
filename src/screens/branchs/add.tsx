@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
+import InputMask from 'react-input-mask'
 import { 
     Breadcrumb, 
     BreadcrumbList, 
@@ -198,7 +199,15 @@ export function AddAgencies() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>CNPJ</FormLabel>
-                                                    <Input type='text' placeholder='Número CNPJ' {...field} />
+                                                    <InputMask
+                                                        mask="99.999.999/9999-99"
+                                                        value={field.value}
+                                                        placeholder='CNPJ'
+                                                        onChange={field.onChange}
+                                                        onBlur={field.onBlur}
+                                                    >
+                                                        {(inputProps) => <Input {...inputProps} />}
+                                                    </InputMask>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -242,7 +251,15 @@ export function AddAgencies() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>CEP</FormLabel>
-                                                    <Input type='text' placeholder='CEP' {...field} />
+                                                    <InputMask
+                                                        mask="99999-999"
+                                                        value={field.value}
+                                                        placeholder='CEP'
+                                                        onChange={field.onChange}
+                                                        onBlur={field.onBlur}
+                                                    >
+                                                        {(inputProps) => <Input {...inputProps} />}
+                                                    </InputMask>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
