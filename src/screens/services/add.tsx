@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { z } from 'zod'
@@ -38,25 +39,46 @@ import ApiService from './service'
 const FormSchema = z.object({
 	name: z.string().min(5, {message: 'Mínimo 5 caracteres'}),
     code: z.string().min(1, {message: 'Mínimo 1 caracteres'}),
-    price: z.string().min(1, {message: 'Mínimo 1 caracteres'}),
+    price: z.string()
+    .min(7, { message: 'Mínimo 7 dígitos' })
+    .max(10, { message: 'Máximo 10 dígitos' }),
     description: z.string().min(2, {message: 'Mínimo 11 caracteres'}),
 })
 
+const formatCurrency = (value: string) => {
+    let formattedValue = value.replace(/[^\d,]/g, '')
+    formattedValue = formattedValue.replace(/,/g, '')
+    if (formattedValue.length > 2) {
+        formattedValue = formattedValue.replace(/(\d)(\d{2})$/, '$1,$2')
+    }
+    formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    formattedValue = `R$ ${formattedValue}`
+    return formattedValue
+}
 
 export function AddServices() {
+    const [price, setPrice] = useState('')
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
     
+    const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const priceChanged = event.target.value
+        setPrice(formatCurrency(priceChanged))
+        form.setValue('price', priceChanged)
+    }
+
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        const formattedData = {
+
+        const updateData = {
             ...data,
-            price: parseFloat(data.price).toFixed(2)
+            price: price.replace('R$', '').replace(/\s+/g, '').replace(',', '.').trim(),
         }
+        
         try {
-            const response = await ApiService.Insert({ data: formattedData })
+            const response = await ApiService.Insert({ data: updateData })
             if (response === 201) {                
                 navigate('/services')
             } else {
@@ -136,8 +158,13 @@ export function AddServices() {
                                             name='price'
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Valor R$</FormLabel>
-                                                    <Input type='number' placeholder='Valor' {...field} />
+                                                    <FormLabel>Custo de Serviço</FormLabel>
+                                                    <Input 
+                                                        placeholder='Orçamento'
+                                                        {...field}
+                                                        value={price}
+                                                        onChange={handlePriceChange}
+                                                    />
                                                     <FormMessage />
                                                 </FormItem>
                                             )}

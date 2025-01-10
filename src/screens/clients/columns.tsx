@@ -43,7 +43,7 @@ export const columns = (setClient: React.Dispatch<React.SetStateAction<Client[]>
         },
         cell: ({ row }) => {
             return (
-                <p className='text-black dark:text-white text-[14.5px]'>{row.original.budget.toFixed(2)}</p>
+                <p className='text-black dark:text-white text-[14.5px]'>R${row.original.budget.toFixed(2)}</p>
             )
         }
     },
