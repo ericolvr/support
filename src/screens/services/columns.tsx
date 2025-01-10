@@ -53,12 +53,12 @@ export const columns = (setService: React.Dispatch<React.SetStateAction<Service[
         accessorKey: 'price',
         header: () => {
             return (
-                <p className='text-black dark:text-white text-[12px] font-extrabold text-xs uppercase'>Valor R$</p>
+                <p className='text-black dark:text-white text-[12px] font-extrabold text-xs uppercase'>Custo de Serviço</p>
             )
         },
         cell: ({ row }) => {
             return (
-                <p className='text-black dark:text-white text-[14.5px]'>{parseFloat(row.original.price).toFixed(2)}</p>
+                <p className='text-black dark:text-white text-[14.5px]'>R${parseFloat(row.original.price).toFixed(2)}</p>
             )
         }
     },
